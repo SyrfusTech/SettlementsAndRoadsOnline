@@ -1,0 +1,2 @@
+# SettlementsAndRoadsOnline
+A free open source digital implementation of the classic board game Catan!  All rights to the IP of the game concept and the game rules remain with **Catan GmbH 2020**.  However all code implementation and art remains under copyright of **Syrfus Tech**.
