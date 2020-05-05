@@ -30,6 +30,7 @@ namespace SettlementsAndRoadsOnlineServer.src
 
             private readonly int id;
             private NetworkStream stream;
+            private Packet receivedData;
             private byte[] receiveBuffer;
 
             public TCP(int _id)
@@ -48,13 +49,29 @@ namespace SettlementsAndRoadsOnlineServer.src
                 // Get the NetworkStream from the socket and initialize the dataBuffer
                 stream = socket.GetStream();
 
+                receivedData = new Packet();
                 receiveBuffer = new byte[dataBufferSize];
 
                 // Begin listening for data from the client, and if data arrives call the ReceiveCallback method
                 // Data is read out into the receiveBuffer
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
-                //TODO: send welcome packet
+                ServerSend.Welcome(id, "Welcome to the server!");
+            }
+
+            public void SendData(Packet _packet)
+            {
+                try
+                {
+                    if (socket != null)
+                    {
+                        stream.BeginWrite(_packet.ToArray(), 0, _packet.Length(), null, null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error sending data to player {id} via TCP: {e}");
+                }
             }
 
             private void ReceiveCallback(IAsyncResult _result)
@@ -75,15 +92,59 @@ namespace SettlementsAndRoadsOnlineServer.src
                     byte[] data = new byte[byteLength];
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    //TODO: handle data
+                    receivedData.Reset(HandleData(data));
                     // Finally re-open the NetworkStream to receive the next data
                     stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine($"Error receiving TCP data: {ex}");
+                    Console.WriteLine($"Error receiving TCP data: {e}");
                     //TODO: disconnect
                 }
+            }
+
+            private bool HandleData(byte[] _data)
+            {
+                int packetLength = 0;
+                receivedData.SetBytes(_data);
+                if (receivedData.UnreadLength() >= 4)
+                {
+                    packetLength = receivedData.ReadInt();
+                    if (packetLength <= 0)
+                    {
+                        return true;
+                    }
+                }
+
+                while (packetLength > 0 && packetLength <= receivedData.UnreadLength())
+                {
+                    byte[] packetBytes = receivedData.ReadBytes(packetLength);
+                    ThreadManager.ExecuteOnMainThread(() =>
+                    {
+                        using (Packet packet = new Packet(packetBytes))
+                        {
+                            int packetId = packet.ReadInt();
+                            Server.packetHandlers[packetId](id, packet);
+                        }
+                    });
+
+                    packetLength = 0;
+                    if (receivedData.UnreadLength() >= 4)
+                    {
+                        packetLength = receivedData.ReadInt();
+                        if (packetLength <= 0)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                if (packetLength <= 1)
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
     }

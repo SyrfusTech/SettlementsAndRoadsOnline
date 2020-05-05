@@ -14,6 +14,9 @@ namespace SettlementsAndRoadsOnlineServer.src
         public static int port { get; private set; }
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
 
+        public delegate void PacketHandler(int _fromClient, Packet _packet);
+        public static Dictionary<int, PacketHandler> packetHandlers;
+
         // A listener that opens up a socket and waits for a client to ask if they can connect
         private static TcpListener tcpListener;
 
@@ -70,6 +73,12 @@ namespace SettlementsAndRoadsOnlineServer.src
             {
                 clients.Add(i, new Client(i));
             }
+
+            packetHandlers = new Dictionary<int, PacketHandler>()
+            {
+                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived }
+            };
+            Console.WriteLine("Initialized packets.");
         }
     }
 }
