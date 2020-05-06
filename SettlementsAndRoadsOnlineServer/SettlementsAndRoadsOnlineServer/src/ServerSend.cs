@@ -87,10 +87,14 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
+        public static int chatSlot = 0;
+
         public static void SendChatMessageToClients(string _username, string _msg)
         {
             using (Packet packet = new Packet((int)ServerPackets.chatMessageToClients))
             {
+                packet.Write(chatSlot);
+                chatSlot = (chatSlot + 1) % 11;
                 packet.Write($"{_username}: {_msg}");
 
                 SendTCPDataToAll(packet);

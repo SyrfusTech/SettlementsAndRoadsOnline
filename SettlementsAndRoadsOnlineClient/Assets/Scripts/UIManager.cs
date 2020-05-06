@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class UIManager : MonoBehaviour
     public InputField usernameField;
     public InputField ipAddressField;
     public InputField chatInputField;
-    public Text chatMessage;
+    public Text[] chatSlots = new Text[11];
 
     private void Awake()
     {
@@ -38,6 +39,10 @@ public class UIManager : MonoBehaviour
         usernameField.interactable = false;
         ipAddressField.interactable = false;
         chatMenu.SetActive(true);
+        for (int i = 0; i < 11; i++)
+        {
+            chatSlots[i] = GameObject.Find(i.ToString()).GetComponent<Text>();
+        }
 
         Client.instance.username = usernameField.text;
         Client.instance.ip = ipAddressField.text;

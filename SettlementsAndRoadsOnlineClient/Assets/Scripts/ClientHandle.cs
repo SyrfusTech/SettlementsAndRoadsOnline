@@ -29,8 +29,9 @@ public class ClientHandle : MonoBehaviour
 
     public static void ReceiveChatMessage(Packet _packet)
     {
+        int slot = _packet.ReadInt();
         string msg = _packet.ReadString();
 
-        UIManager.instance.chatMessage.text = msg;
+        UIManager.instance.chatSlots[slot].text = msg;
     }
 }
