@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using SharedClasses;
 using System.Linq.Expressions;
 
 public class Client : MonoBehaviour

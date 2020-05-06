@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using SharedClasses;
 using UnityEngine;
 
 public class ClientHandle : MonoBehaviour

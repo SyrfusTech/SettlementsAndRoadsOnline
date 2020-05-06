@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using SharedClasses;
 using UnityEngine;
 
 public class ClientSend : MonoBehaviour

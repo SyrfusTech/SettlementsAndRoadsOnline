@@ -1,60 +1,60 @@
-SettlementsAndRoadsOnlineServer/[Ee]xported[Oo]bj/
-SettlementsAndRoadsOnlineServer/.vs/
-SettlementsAndRoadsOnlineServer/*.userprefs
-SettlementsAndRoadsOnlineServer/*.csproj
-SettlementsAndRoadsOnlineServer/*.pidb
-SettlementsAndRoadsOnlineServer/*.pidb.meta
-SettlementsAndRoadsOnlineServer/*.suo
-SettlementsAndRoadsOnlineServer/*.sln*
-SettlementsAndRoadsOnlineServer/*.user
-SettlementsAndRoadsOnlineServer/*.unityproj
-SettlementsAndRoadsOnlineServer/*.booproj
-SettlementsAndRoadsOnlineServer/.consulo/
-SettlementsAndRoadsOnlineServer/*.tmp
-SettlementsAndRoadsOnlineServer/*.svd
+*/[Ee]xported[Oo]bj/
+*/.vs/
+*/*.userprefs
+*/*.csproj
+*/*.pidb
+*/*.pidb.meta
+*/*.suo
+*/*.sln*
+*/*.user
+*/*.unityproj
+*/*.booproj
+*/.consulo/
+*/*.tmp
+*/*.svd
 
 # =============== #
 # Unity generated #
 # =============== #
-SettlementsAndRoadsOnlineClient/[Tt]emp/
-SettlementsAndRoadsOnlineClient/[Oo]bj/
-SettlementsAndRoadsOnlineClient/[Bb]uild
-SettlementsAndRoadsOnlineClient/[Bb]uilds/
-SettlementsAndRoadsOnlineClient/[Ll]ibrary/
-SettlementsAndRoadsOnlineClientsysinfo.txt
-SettlementsAndRoadsOnlineClient/*.stackdump
-SettlementsAndRoadsOnlineClient/Assets/AssetStoreTools*
-SettlementsAndRoadsOnlineClient/*.apk
-SettlementsAndRoadsOnlineClient/*.unitypackage
+*/[Tt]emp/
+*/[Oo]bj/
+*/[Bb]uild
+*/[Bb]uilds/
+*/[Ll]ibrary/
+*/sysinfo.txt
+*/*.stackdump
+*/Assets/AssetStoreTools*
+*/*.apk
+*/*.unitypackage
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
-SettlementsAndRoadsOnlineClient/[Ee]xported[Oo]bj/
-SettlementsAndRoadsOnlineClient/.vs/
-SettlementsAndRoadsOnlineClient/*.userprefs
-SettlementsAndRoadsOnlineClient/*.csproj
-SettlementsAndRoadsOnlineClient/*.pidb
-SettlementsAndRoadsOnlineClient/*.pidb.meta
-SettlementsAndRoadsOnlineClient/*.suo
-SettlementsAndRoadsOnlineClient/*.sln*
-SettlementsAndRoadsOnlineClient/*.user
-SettlementsAndRoadsOnlineClient/*.unityproj
-SettlementsAndRoadsOnlineClient/*.booproj
-SettlementsAndRoadsOnlineClient/.consulo/
-SettlementsAndRoadsOnlineClient/*.tmp
-SettlementsAndRoadsOnlineClient/*.svd
+*/[Ee]xported[Oo]bj/
+*/.vs/
+*/*.userprefs
+*/*.csproj
+*/*.pidb
+*/*.pidb.meta
+*/*.suo
+*/*.sln*
+*/*.user
+*/*.unityproj
+*/*.booproj
+*/.consulo/
+*/*.tmp
+*/*.svd
  
 # ============ #
 # OS generated #
 # ============ #
-SettlementsAndRoadsOnlineClient/.DS_Store*
-SettlementsAndRoadsOnlineClient/._*
-SettlementsAndRoadsOnlineClient/.Spotlight-V100
-SettlementsAndRoadsOnlineClient/.Trashes
-SettlementsAndRoadsOnlineClient/Icon?
-SettlementsAndRoadsOnlineClient/ehthumbs.db
-SettlementsAndRoadsOnlineClient/[Tt]humbs.db
-SettlementsAndRoadsOnlineClient/[Dd]esktop.ini
-SettlementsAndRoadsOnlineClient/Corridor/Library/ShaderCache/
-SettlementsAndRoadsOnlineClient/Corridor/Library/metadata/
+*/.DS_Store*
+*/._*
+*/.Spotlight-V100
+*/.Trashes
+*/Icon?
+*/ehthumbs.db
+*/[Tt]humbs.db
+*/[Dd]esktop.ini
+*/Corridor/Library/ShaderCache/
+*/Corridor/Library/metadata/
