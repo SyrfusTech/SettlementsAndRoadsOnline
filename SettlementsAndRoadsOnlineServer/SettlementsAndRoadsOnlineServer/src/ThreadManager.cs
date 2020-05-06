@@ -25,10 +25,13 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
+        // Mutex logic for executing all the functions that have been passed to the queue
         public static void UpdateMain()
         {
+            // Check if there're actions to execute
             if (actionToExecuteOnMainThread)
             {
+                // Mutex for copying the list of functions into the temp List and clearing the main List to start accepting new functions to the queue
                 executeCopiedOnMainThread.Clear();
                 lock (executeOnMainThread)
                 {
@@ -37,6 +40,7 @@ namespace SettlementsAndRoadsOnlineServer.src
                     actionToExecuteOnMainThread = false;
                 }
 
+                // Execute every function in the list
                 for (int i = 0; i < executeCopiedOnMainThread.Count; i++)
                 {
                     executeCopiedOnMainThread[i]();

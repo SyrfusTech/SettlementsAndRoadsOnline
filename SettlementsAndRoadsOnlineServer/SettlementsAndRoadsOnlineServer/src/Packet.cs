@@ -4,16 +4,20 @@ using System.Text;
 
 namespace SettlementsAndRoadsOnlineServer.src
 {
-    // A label for something sent from server to client
+    // An enum for something sent from server to client
     public enum ServerPackets
     {
-        welcome = 1
+        welcome = 1,
+        udpTest,
+        chatMessageToClients
     }
 
-    // A label for something sent from client to server
+    // An enum for something sent from client to server
     public enum ClientPackets
     {
-        welcomeReceived = 1
+        welcomeReceived = 1,
+        udpTestReceived,
+        chatMessageToServer
     }
 
     public class Packet : IDisposable

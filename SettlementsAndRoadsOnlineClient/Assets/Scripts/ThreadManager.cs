@@ -8,11 +8,13 @@ public class ThreadManager : MonoBehaviour
     private static readonly List<Action> executeCopiedOnMainThread = new List<Action>();
     private static bool actionToExecuteOnMainThread = false;
 
+    // Called automatically at the Unity tick rate (need to set up the Unity Tick Rate to match the Server Tick Rate)
     private void Update()
     {
         UpdateMain();
     }
 
+    // The next two functions are identical to the Server code
     public static void ExecuteOnMainThread(Action _action)
     {
         if (_action == null)

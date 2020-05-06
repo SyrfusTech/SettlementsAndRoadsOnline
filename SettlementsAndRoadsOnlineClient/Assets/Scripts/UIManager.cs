@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +9,12 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 
     // Some basic UI elements
-    public GameObject startMenu;
+    public GameObject connectMenu;
+    public GameObject chatMenu;
     public InputField usernameField;
+    public InputField ipAddressField;
+    public InputField chatInputField;
+    public Text chatMessage;
 
     private void Awake()
     {
@@ -31,9 +34,20 @@ public class UIManager : MonoBehaviour
     public void ConnectToServer()
     {
         // Hide the connection UI
-        startMenu.SetActive(false);
+        connectMenu.SetActive(false);
         usernameField.interactable = false;
+        ipAddressField.interactable = false;
+        chatMenu.SetActive(true);
+
+        Client.instance.username = usernameField.text;
+        Client.instance.ip = ipAddressField.text;
         // Tell the Client.instance to Connect to the server
         Client.instance.ConnectToServer();
+    }
+
+    public void SendChatMessage()
+    {
+        ClientSend.SendChatMessage(chatInputField.text);
+        chatInputField.text = "";
     }
 }
