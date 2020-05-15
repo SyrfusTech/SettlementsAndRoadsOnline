@@ -77,17 +77,6 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
-        // Create a packet which contains the string below and then SendUDPData is called
-        public static void UDPTest(int _toClient)
-        {
-            using (Packet packet = new Packet((int)ServerPackets.udpTest))
-            {
-                packet.Write("A test packet for UDP.");
-
-                SendUDPData(_toClient, packet);
-            }
-        }
-
         public static int chatSlot = 0;
 
         public static void SendChatMessageToClients(string _username, string _msg)

@@ -149,7 +149,6 @@ namespace SettlementsAndRoadsOnlineServer.src
             {
                 // The first int is the enum of the packet received (the identifier), the second is the function with matching parameter list as the delegate to be called
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
-                { (int)ClientPackets.udpTestReceived, ServerHandle.UDPTestReceived },
                 { (int)ClientPackets.chatMessageToServer, ServerHandle.ChatMessageReceived }
             };
             Console.WriteLine("Initialized packets.");

@@ -20,14 +20,6 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
-        // The packet handler for when we receive a UDPTestReceived message in the Client Class
-        public static void UDPTestReceived(int _fromClient, Packet _packet)
-        {
-            string msg = _packet.ReadString();
-
-            Console.WriteLine($"Received packet via UDP. Contains message: {msg}");
-        }
-
         public static void ChatMessageReceived(int _fromClient, Packet _packet)
         {
             string username = _packet.ReadString();

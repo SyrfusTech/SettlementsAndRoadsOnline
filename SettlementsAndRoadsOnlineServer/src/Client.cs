@@ -196,8 +196,6 @@ namespace SettlementsAndRoadsOnlineServer.src
             public void Connect(IPEndPoint _endPoint)
             {
                 endPoint = _endPoint;
-                // Upon connection send the UDP Test packet
-                ServerSend.UDPTest(id);
             }
 
             public void SendData(Packet _packet)
