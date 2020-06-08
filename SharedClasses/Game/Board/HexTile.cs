@@ -27,11 +27,11 @@ namespace SharedClasses
         }
     }
 
-    public struct HexTileListContainer
+    public struct BoardContainer
     {
         public List<HexTile> hexTiles;
 
-        public HexTileListContainer(List<HexTile> _hexTiles)
+        public BoardContainer(List<HexTile> _hexTiles)
         {
             hexTiles = _hexTiles;
         }

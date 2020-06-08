@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using SharedClasses;
@@ -21,7 +22,6 @@ public class ClientHandle : MonoBehaviour
 
     public static void ReceiveChatMessage(Packet _packet)
     {
-        int slot = _packet.ReadInt();
         string msg = _packet.ReadString();
     }
 }

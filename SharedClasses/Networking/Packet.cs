@@ -8,7 +8,8 @@ namespace SharedClasses
     public enum ServerPackets
     {
         welcome = 1,
-        chatMessageToClients
+        chatMessageToClients,
+        startGame
     }
 
     // An enum for something sent from client to server

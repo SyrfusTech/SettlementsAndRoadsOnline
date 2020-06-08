@@ -5,11 +5,14 @@ using UnityEngine;
 using SharedClasses;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
     // Again singleton, probably don't wanna have multiple input managers
     public static UIManager instance;
+
+    public Transform uiCanvas;
 
     // Connection Game Objects
     public GameObject connectPanel;
@@ -19,9 +22,31 @@ public class UIManager : MonoBehaviour
     // Main Menu Game Objects
     public GameObject mainMenuPanel;
 
+    // Host Game Game Objects
+    public GameObject selectBoardPanel;
+    public Transform selectBoardScrollViewContent;
+    public Button boardsButtonPrefab;
+    private string fileToLoad = null;
+
+    // Lobby Game Objects
+    public GameObject lobbyPanel;
+    public Dropdown numPlayersDropdown;
+    public Dropdown victoryPointsForWinDropdown;
+    public Dropdown setupPhaseDropdown;
+    public Text[] usernameTexts;
+    public Text[] readyStatusTexts;
+
     // Manage Boards Game Objects
     public GameObject manageBoardsPanel;
-    public HexagonGridManager hexagonGridManager;
+    public Transform boardsScrollViewContent;
+
+    public GameObject confirmationPanel;
+    public Text deleteConfirmationText;
+
+    // Boards Editor Game Objects
+    public GameObject boardsEditorPanel;
+    public GameObject boardsEditorParent;
+    public HexagonGridEditManager hexagonGridEditManager;
     public InputField boardNameInputField;
 
     private void Awake()
@@ -64,65 +89,192 @@ public class UIManager : MonoBehaviour
         // If client receives a packet of lobby data, update the client's GUI.
     }
 
-    public void ReadyUp()
+    public void Join()
     {
-        // If client readies up then send packet of ready data to Server (distributed to all other players).
+
+    }
+
+    public void OpenPlayerLobby()
+    {
+        selectBoardPanel.SetActive(false);
+        lobbyPanel.SetActive(true);
     }
     #endregion
 
     #region HostGame
     public void HostGame()
     {
+        mainMenuPanel.SetActive(false);
+        selectBoardPanel.SetActive(true);
+
+        LoadBoardList(selectBoardScrollViewContent);
+    }
+
+    public void Host()
+    {
         // Send board and client information to Server requesting a new game be created under client's username.
-        // Opens up "HostLobbyPanel" and populates the fields with data retrieved from the server.
-        // If host receives a packet of lobby data, update the host's GUI (from a player joining or readying up).
-        // If host updates any fields, send packet of lobby data to Server (distributed to all other players).
+        if (fileToLoad != null)
+        {
+            SendSelectedBoard();
+        }
+    }
+
+    public void SendSelectedBoard()
+    {
+        string fileName = fileToLoad;
+        if (fileName != null)
+        {
+            string jsonBoard = SaveManager.LoadDataAsJSON(fileName);
+            // Send the string to the Server
+            Debug.Log(jsonBoard);
+            // TEMPORARY CODE (This should be called when the server confirms the game has been created)
+            OpenHostLobby();
+        }
+    }
+
+    public void OpenHostLobby()
+    {
+        selectBoardPanel.SetActive(false);
+        lobbyPanel.SetActive(true);
+        numPlayersDropdown.interactable = true;
+        victoryPointsForWinDropdown.interactable = true;
+        setupPhaseDropdown.interactable = true;
+    }
+    #endregion
+
+    #region Lobby
+
+    public void NumPlayersDropdownChanged()
+    {
+        // TODO: Check to see if current client is host and send the update to all other players
+        usernameTexts[0].text = numPlayersDropdown.value.ToString();
+    }
+
+    public void VictoryPointsForWinDropdownChanged()
+    {
+        // TODO: Check to see if current client is host and send the update to all other players
+        readyStatusTexts[0].text = victoryPointsForWinDropdown.value.ToString();
+    }
+
+    public void SetupPhaseDropdownChanged()
+    {
+        // TODO: Check to see if current client is host and send the update to all other players
+        Debug.Log(setupPhaseDropdown.value);
+    }
+
+
+    public void ReadyUp()
+    {
+        // If client readies up then send packet of ready data to Server (distributed to all other players).
     }
 
     public void StartGame()
     {
-        // If all connected players are ready, then send StartGame and LobbyData packets to the Server.
-        // Server side the LobbyData and StartGame packets will be distributed to each player in the game
-        // (including the host) and the Handle for StartGame will unload the MainMenu's scene and load in
-        // the Game scene populated with the LobbyData being used as settings.
-        // From there the Game scene's GameLoop will handle the rest.
+
     }
+
+    public void CloseGame()
+    {
+        // TODO: Check if Host, if so inform all other players of the game closing
+        //       Else inform hostedGame that player is leaving.
+        ReturnToMainMenu();
+    }
+
     #endregion
 
     #region ManageBoards
+    public void GetTextFromButton(string _name)
+    {
+        fileToLoad = _name;
+    }
+
     public void ManageBoards()
     {
         // Open Manage Boards Panel
         mainMenuPanel.SetActive(false);
         manageBoardsPanel.SetActive(true);
-        // Populate the UI with the list of boards in the directory specified for saving boards.
 
-        // Select a board (or the create new board option) from the dropdown list and click the ManageButton.
+        LoadBoardList(boardsScrollViewContent);
+    }
+
+    public void LoadBoardList(Transform _scrollViewContent)
+    {
+        for (int i = 0; i < _scrollViewContent.childCount; i++)
+        {
+            Destroy(_scrollViewContent.GetChild(i).gameObject);
+        }
+
+        // Populate the UI with the list of boards in the directory specified for saving boards.
+        string[] files = SaveManager.GetBoardNames();
+        foreach (string file in files)
+        {
+            Button boardsButton = GameObject.Instantiate(boardsButtonPrefab);
+            boardsButton.transform.SetParent(_scrollViewContent, false);
+            boardsButton.onClick.AddListener(delegate { GetTextFromButton(Path.GetFileNameWithoutExtension(file)); });
+            boardsButton.transform.GetChild(0).gameObject.GetComponent<Text>().text = Path.GetFileNameWithoutExtension(file);
+        }
     }
 
     public void Manage()
     {
-        // Unload the MainMenu's scene and load in the ManageBoards' scene and load in the JSON tilemap.
+        // Unload the BoardSelectionPanel's scene and load in the ManageBoards' scene and load in the JSON tilemap.
+        if (fileToLoad != null)
+        {
+            manageBoardsPanel.SetActive(false);
+            boardsEditorPanel.SetActive(true);
+            boardsEditorParent.SetActive(true);
+            boardNameInputField.text = fileToLoad;
+            LoadBoard();
+        }
+    }
+
+    public void CreateNewBoard()
+    {
+        manageBoardsPanel.SetActive(false);
+        boardsEditorPanel.SetActive(true);
+        boardsEditorParent.SetActive(true);
+        boardNameInputField.text = "";
+        hexagonGridEditManager.ClearAllTiles();
+        hexagonGridEditManager.hexTiles = new List<HexTile>();
+    }
+
+    public void DeleteBoard()
+    {
+        confirmationPanel.SetActive(true);
+        deleteConfirmationText.text = "Delete\n" + fileToLoad + "?";
+    }
+
+    public void DeleteConfirmed()
+    {
+        SaveManager.DeleteBoard(fileToLoad);
+        fileToLoad = null;
+        LoadBoardList(boardsScrollViewContent);
+        confirmationPanel.SetActive(false);
+    }
+
+    public void DeleteCanceled()
+    {
+        confirmationPanel.SetActive(false);
     }
 
     public void HexTileSelection(int _type)
     {
-        hexagonGridManager.SetHexPlacementType(_type);
+        hexagonGridEditManager.SetHexPlacementType(_type);
     }
 
     public void DiceNumberTileSelection(int _type)
     {
-        hexagonGridManager.SetDiceNumberPlacementType(_type);
+        hexagonGridEditManager.SetDiceNumberPlacementType(_type);
     }
 
     public void RobberSelection()
     {
-        hexagonGridManager.SetRobberPlacement();
+        hexagonGridEditManager.SetRobberPlacement();
     }
 
     public void EraseSelection()
     {
-        hexagonGridManager.SetErasePlacement();
+        hexagonGridEditManager.SetErasePlacement();
     }
 
     public void SaveBoard()
@@ -131,7 +283,7 @@ public class UIManager : MonoBehaviour
         // Checks if name of board is not empty.
         if (!fileName.Equals(""))
         {
-            SaveManager.SaveData(hexagonGridManager.hexTiles, fileName);
+            SaveManager.SaveData(hexagonGridEditManager.hexTiles, fileName);
         }
     }
 
@@ -141,14 +293,20 @@ public class UIManager : MonoBehaviour
         if (!fileName.Equals(""))
         {
             List<HexTile> hexTiles = SaveManager.LoadData(fileName);
-            hexagonGridManager.ClearAllTiles();
-            hexagonGridManager.LoadBoard(hexTiles);
+            hexagonGridEditManager.ClearAllTiles();
+            hexagonGridEditManager.LoadBoard(hexTiles);
         }
     }
+    #endregion
 
     public void ReturnToMainMenu()
     {
-        // Unload the ManageBoards' scene and load the MainMenu's scene.
+        boardsEditorParent.SetActive(false);
+        for (int i = 0; i < uiCanvas.childCount; i++)
+        {
+            uiCanvas.GetChild(i).gameObject.SetActive(false);
+        }
+
+        mainMenuPanel.SetActive(true);
     }
-    #endregion
 }
