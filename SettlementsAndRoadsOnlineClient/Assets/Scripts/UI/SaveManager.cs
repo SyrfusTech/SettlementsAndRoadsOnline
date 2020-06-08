@@ -31,7 +31,7 @@ public static class SaveManager
 
     public static string[] GetBoardNames()
     {
-        return Directory.GetFiles(Application.persistentDataPath);
+        return Directory.GetFiles(Application.persistentDataPath, $"*{extension}");
     }
 
     public static string GetExtension()

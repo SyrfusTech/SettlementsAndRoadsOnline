@@ -8,12 +8,18 @@ namespace SettlementsAndRoadsOnlineServer.src.GameState
     public class HostedGame
     {
         public List<Player> players;
+
+        public string jsonBoard;
+        public GameLobbyInfo lobbyInfo;
+
         public bool inProgress;
         public int currentPlayerTurnNumber;
 
-        public HostedGame(Player host)
+        public HostedGame(Player host, string _jsonBoard)
         {
             players = new List<Player>();
+            jsonBoard = _jsonBoard;
+            lobbyInfo = new GameLobbyInfo();
             inProgress = false;
             currentPlayerTurnNumber = 0;
 

@@ -24,4 +24,9 @@ public class ClientHandle : MonoBehaviour
     {
         string msg = _packet.ReadString();
     }
+
+    public static void ReceiveHostSuccess(Packet _packet)
+    {
+        UIManager.instance.OpenHostLobby();
+    }
 }

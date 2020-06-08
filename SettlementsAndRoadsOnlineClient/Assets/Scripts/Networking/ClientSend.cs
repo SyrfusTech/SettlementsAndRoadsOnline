@@ -47,5 +47,15 @@ public class ClientSend : MonoBehaviour
         }
     }
 
+    public static void SendJSONBoardForHost(string _jsonBoard)
+    {
+        using (Packet packet = new Packet((int)ClientPackets.jsonBoardToServerForHost))
+        {
+            packet.Write(_jsonBoard);
+
+            SendTCPData(packet);
+        }
+    }
+
     #endregion
 }

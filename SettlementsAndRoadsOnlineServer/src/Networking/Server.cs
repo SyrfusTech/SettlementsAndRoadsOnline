@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using SharedClasses;
 using System.Runtime.CompilerServices;
+using SettlementsAndRoadsOnlineServer.src.GameState;
 
 namespace SettlementsAndRoadsOnlineServer.src
 {
@@ -34,6 +35,7 @@ namespace SettlementsAndRoadsOnlineServer.src
 
             Console.WriteLine("Starting server");
             InitializeServerData();
+            ServerState.Initialize();
 
             // Initialize the tcp listener with any IPAddress on our port
             tcpListener = new TcpListener(IPAddress.Any, port);
@@ -150,6 +152,7 @@ namespace SettlementsAndRoadsOnlineServer.src
                 // The first int is the enum of the packet received (the identifier), the second is the function with matching parameter list as the delegate to be called
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.chatMessageToServer, ServerHandle.ChatMessageReceived },
+                { (int)ClientPackets.jsonBoardToServerForHost, ServerHandle.JSONBoardReceivedForHost }
             };
             Console.WriteLine("Initialized packets.");
         }

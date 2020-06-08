@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SettlementsAndRoadsOnlineServer.src.GameState;
 using SharedClasses;
 
 namespace SettlementsAndRoadsOnlineServer.src
@@ -13,6 +14,7 @@ namespace SettlementsAndRoadsOnlineServer.src
             int clientIdCheck = _packet.ReadInt();
             string username = _packet.ReadString();
 
+            ServerState.PlayerConnected(_fromClient, username);
             Console.WriteLine($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint}: \"{username}\" connected successfully and is now player {_fromClient}.");
             if (_fromClient != clientIdCheck)
             {
@@ -26,6 +28,14 @@ namespace SettlementsAndRoadsOnlineServer.src
             string msg = _packet.ReadString();
 
             ServerSend.SendChatMessageToClients(username, msg);
+        }
+
+        public static void JSONBoardReceivedForHost(int _fromClient, Packet _packet)
+        {
+            string jsonBoard = _packet.ReadString();
+
+            ServerState.AddNewHostedGame(_fromClient, jsonBoard);
+            ServerSend.GameHostedSuccessToClient(_fromClient);
         }
     }
 }

@@ -87,6 +87,14 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
+        public static void GameHostedSuccessToClient(int _toClient)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.gameHostedSuccessfully))
+            {
+                SendTCPData(_toClient, packet);
+            }
+        }
+
         public static void SendStartMessageToClient(int _toClient)
         {
             using (Packet packet = new Packet((int)ServerPackets.startGame))

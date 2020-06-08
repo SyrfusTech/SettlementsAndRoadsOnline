@@ -331,7 +331,8 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int)ServerPackets.welcome, ClientHandle.Welcome },
-            { (int)ServerPackets.chatMessageToClients, ClientHandle.ReceiveChatMessage }
+            { (int)ServerPackets.chatMessageToClients, ClientHandle.ReceiveChatMessage },
+            { (int)ServerPackets.gameHostedSuccessfully, ClientHandle.ReceiveHostSuccess }
         };
         Debug.Log("Initialized packets.");
     }

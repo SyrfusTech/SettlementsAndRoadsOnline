@@ -8,7 +8,6 @@ namespace SettlementsAndRoadsOnlineServer.src.GameState
 {
     public static class ServerState
     {
-        // Consider switching this to a Dict so that lookup times are O(1)
         public static List<Player> connectedPlayers;
         public static List<HostedGame> hostedGames;
 
@@ -24,19 +23,19 @@ namespace SettlementsAndRoadsOnlineServer.src.GameState
         }
 
 
-        public static void AddNewHostedGame(int _hostId, string _hostUsername)
+        public static void AddNewHostedGame(int _hostId, string _jsonBoard)
         {
             foreach (Player player in connectedPlayers)
             {
                 if (player.clientId == _hostId)
                 {
-                    hostedGames.Add(new HostedGame(player));
+                    hostedGames.Add(new HostedGame(player, _jsonBoard));
                     break;
                 }
             }
         }
 
-        public static void AddPlayerToHostedGame(int _hostId, int _clientId, string _clientUsername)
+        public static void AddPlayerToHostedGame(int _hostId, int _clientId)
         {
             foreach (HostedGame hostedGame in hostedGames)
             {

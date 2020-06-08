@@ -126,9 +126,7 @@ public class UIManager : MonoBehaviour
         {
             string jsonBoard = SaveManager.LoadDataAsJSON(fileName);
             // Send the string to the Server
-            Debug.Log(jsonBoard);
-            // TEMPORARY CODE (This should be called when the server confirms the game has been created)
-            OpenHostLobby();
+            ClientSend.SendJSONBoardForHost(jsonBoard);
         }
     }
 
@@ -161,7 +159,6 @@ public class UIManager : MonoBehaviour
         // TODO: Check to see if current client is host and send the update to all other players
         Debug.Log(setupPhaseDropdown.value);
     }
-
 
     public void ReadyUp()
     {

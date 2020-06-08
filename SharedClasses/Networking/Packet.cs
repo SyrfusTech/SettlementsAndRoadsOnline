@@ -9,6 +9,8 @@ namespace SharedClasses
     {
         welcome = 1,
         chatMessageToClients,
+        gameHostedSuccessfully,
+        jsonBoardToClient,
         startGame
     }
 
@@ -16,7 +18,8 @@ namespace SharedClasses
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        chatMessageToServer
+        chatMessageToServer,
+        jsonBoardToServerForHost
     }
 
     public class Packet : IDisposable
