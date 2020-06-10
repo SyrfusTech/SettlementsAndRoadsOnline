@@ -31,10 +31,7 @@ namespace SettlementsAndRoadsOnlineServer.src.GameState
         {
             players.Add(_player);
             players[players.Count - 1].currentGameHostId = players[0].clientId;
-            if (players.Count >= 2)
-                players[players.Count - 1].playerNumber = players[players.Count - 2].playerNumber;
-            else
-                players[players.Count - 1].playerNumber = 0;
+            players[players.Count - 1].playerNumber = players.Count >= 2 ? players[players.Count - 2].playerNumber + 1 : 0;
         }
         
         public void StartGame()

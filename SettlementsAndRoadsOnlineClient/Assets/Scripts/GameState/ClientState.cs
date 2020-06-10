@@ -11,19 +11,4 @@ public static class ClientState
     {
         clientPlayer = new Player(_clientId, _username);
     }
-
-    public static void SetPlayerNumber(int _playerNumber)
-    {
-        clientPlayer.playerNumber = _playerNumber;
-    }
-
-    public static void JoinHostedGame(int _hostId)
-    {
-        clientPlayer.currentGameHostId = _hostId;
-    }
-
-    public static void ReadyUp()
-    {
-        clientPlayer.readyStatus = true;
-    }
 }

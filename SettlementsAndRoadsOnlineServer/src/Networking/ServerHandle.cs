@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using SettlementsAndRoadsOnlineServer.src.GameState;
 using SharedClasses;
 
@@ -34,8 +36,16 @@ namespace SettlementsAndRoadsOnlineServer.src
         {
             string jsonBoard = _packet.ReadString();
 
-            ServerState.AddNewHostedGame(_fromClient, jsonBoard);
-            ServerSend.GameHostedSuccessToClient(_fromClient);
+            GameLobbyInfo lobbyInfo = ServerState.AddNewHostedGame(_fromClient, jsonBoard);
+            Player player = ServerState.GetPlayer(_fromClient);
+
+            string jsonLobbyInfo = JsonSerializer.Serialize(lobbyInfo);
+            string jsonPlayer = JsonSerializer.Serialize(player);
+
+            Console.WriteLine($"JsonLobbyInfo: {jsonLobbyInfo}");
+            Console.WriteLine($"JsonPlayer: {jsonPlayer}");
+
+            ServerSend.GameHostedSuccessToClient(_fromClient, jsonLobbyInfo, jsonPlayer);
         }
     }
 }

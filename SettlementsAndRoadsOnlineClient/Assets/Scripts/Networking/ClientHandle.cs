@@ -15,6 +15,7 @@ public class ClientHandle : MonoBehaviour
 
         Debug.Log($"Message from server: {msg}");
         Client.instance.myId = myId;
+        ClientState.Initialize(Client.instance.myId, Client.instance.username);
         ClientSend.WelcomeReceived();
 
         Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
@@ -27,6 +28,20 @@ public class ClientHandle : MonoBehaviour
 
     public static void ReceiveHostSuccess(Packet _packet)
     {
-        UIManager.instance.OpenHostLobby();
+        string jsonLobbyInfo = _packet.ReadString();
+        string jsonPlayer = _packet.ReadString();
+
+        Debug.Log(jsonLobbyInfo);
+        Debug.Log(jsonPlayer);
+
+        GameLobbyInfo lobbyInfo = JsonUtility.FromJson<GameLobbyInfo>(jsonLobbyInfo);
+        Player player = JsonUtility.FromJson<Player>(jsonPlayer);
+
+        Debug.Log(lobbyInfo.maxPlayers);
+        Debug.Log(player.username);
+
+        ClientState.clientPlayer = player;
+
+        UIManager.instance.OpenHostLobby(lobbyInfo);
     }
 }

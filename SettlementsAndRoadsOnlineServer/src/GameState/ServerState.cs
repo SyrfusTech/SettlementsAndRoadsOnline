@@ -22,17 +22,28 @@ namespace SettlementsAndRoadsOnlineServer.src.GameState
             connectedPlayers.Add(new Player(_clientId, _username));
         }
 
+        public static Player GetPlayer(int _clientId)
+        {
+            foreach (Player player in connectedPlayers)
+            {
+                if (player.clientId == _clientId)
+                    return player;
+            }
+            return null;
+        }
 
-        public static void AddNewHostedGame(int _hostId, string _jsonBoard)
+        public static GameLobbyInfo AddNewHostedGame(int _hostId, string _jsonBoard)
         {
             foreach (Player player in connectedPlayers)
             {
                 if (player.clientId == _hostId)
                 {
-                    hostedGames.Add(new HostedGame(player, _jsonBoard));
-                    break;
+                    HostedGame newGame = new HostedGame(player, _jsonBoard);
+                    hostedGames.Add(newGame);
+                    return newGame.lobbyInfo;
                 }
             }
+            return null;
         }
 
         public static void AddPlayerToHostedGame(int _hostId, int _clientId)

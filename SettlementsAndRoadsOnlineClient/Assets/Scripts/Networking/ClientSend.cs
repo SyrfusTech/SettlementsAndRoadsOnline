@@ -29,8 +29,8 @@ public class ClientSend : MonoBehaviour
         // As always add the ClientPackets.welcomeReceived enum to the start of the packet so that we know what kind of packet has just arrived on Server side
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
-            packet.Write(Client.instance.myId);
-            packet.Write(Client.instance.username);
+            packet.Write(ClientState.clientPlayer.clientId);
+            packet.Write(ClientState.clientPlayer.username);
 
             SendTCPData(packet);
         }
@@ -40,7 +40,7 @@ public class ClientSend : MonoBehaviour
     {
         using (Packet packet = new Packet((int)ClientPackets.chatMessageToServer))
         {
-            packet.Write(Client.instance.username);
+            packet.Write(ClientState.clientPlayer.username);
             packet.Write(_msg);
 
             SendTCPData(packet);

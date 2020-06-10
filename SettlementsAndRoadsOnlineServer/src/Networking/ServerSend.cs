@@ -87,10 +87,13 @@ namespace SettlementsAndRoadsOnlineServer.src
             }
         }
 
-        public static void GameHostedSuccessToClient(int _toClient)
+        public static void GameHostedSuccessToClient(int _toClient, string jsonLobbyInfo, string jsonPlayer)
         {
             using (Packet packet = new Packet((int)ServerPackets.gameHostedSuccessfully))
             {
+                packet.Write(jsonLobbyInfo);
+                packet.Write(jsonPlayer);
+
                 SendTCPData(_toClient, packet);
             }
         }

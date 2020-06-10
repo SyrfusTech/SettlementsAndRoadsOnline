@@ -6,6 +6,7 @@ using SharedClasses;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 
 public class UIManager : MonoBehaviour
 {
@@ -130,10 +131,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OpenHostLobby()
+    public void OpenHostLobby(GameLobbyInfo _lobbyInfo)
     {
         selectBoardPanel.SetActive(false);
         lobbyPanel.SetActive(true);
+        UpdateLobbyInfo(_lobbyInfo);
         numPlayersDropdown.interactable = true;
         victoryPointsForWinDropdown.interactable = true;
         setupPhaseDropdown.interactable = true;
@@ -142,22 +144,29 @@ public class UIManager : MonoBehaviour
 
     #region Lobby
 
+    public void UpdateLobbyInfo(GameLobbyInfo _lobbyInfo)
+    {
+        numPlayersDropdown.value = _lobbyInfo.maxPlayers - 2;
+        victoryPointsForWinDropdown.value = _lobbyInfo.victoryPointsForWin - 5;
+        setupPhaseDropdown.value = _lobbyInfo.manualSetup ? 0 : 1;
+
+        usernameTexts[ClientState.clientPlayer.playerNumber].text = ClientState.clientPlayer.username;
+        readyStatusTexts[ClientState.clientPlayer.playerNumber].text = ClientState.clientPlayer.readyStatus ? "Ready" : "Not Ready";
+    }
+
     public void NumPlayersDropdownChanged()
     {
         // TODO: Check to see if current client is host and send the update to all other players
-        usernameTexts[0].text = numPlayersDropdown.value.ToString();
     }
 
     public void VictoryPointsForWinDropdownChanged()
     {
         // TODO: Check to see if current client is host and send the update to all other players
-        readyStatusTexts[0].text = victoryPointsForWinDropdown.value.ToString();
     }
 
     public void SetupPhaseDropdownChanged()
     {
         // TODO: Check to see if current client is host and send the update to all other players
-        Debug.Log(setupPhaseDropdown.value);
     }
 
     public void ReadyUp()
